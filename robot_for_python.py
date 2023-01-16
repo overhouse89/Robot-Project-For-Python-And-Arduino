@@ -4,6 +4,10 @@
 import serial
 import time
 
+# Modules
+import robot_body
+import robot_tkinter
+
 # Select serial's address
 select_serial_input = input("Address: ").strip()
 print("Waiting..")
