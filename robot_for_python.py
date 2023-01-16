@@ -5,8 +5,8 @@ import serial
 import time
 
 # Modules
-import robot_body
-import robot_tkinter
+from modules import robot_body
+from modules import robot_tkinter
 
 # Select serial's address
 select_serial_input = input("Address: ").strip()
