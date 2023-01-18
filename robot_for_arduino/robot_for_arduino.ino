@@ -20,13 +20,14 @@ float servoNum1 = 0;
 float servoNum2 = 0;
 float servoNum3 = 0;
 
-char read_text;
+String read_text;
 
 void setup()
 {
   // SERIAL
 	Serial.begin(9600);
 
+/*
   // RIGHT ARM
   rightArmServo.attach(12);
 
@@ -47,6 +48,7 @@ void setup()
 
   // DELAY
   delay(1000);
+*/
 
   // TWO LEDS
 	pinMode(ledPin1, OUTPUT);
@@ -59,16 +61,16 @@ void loop()
   // SERIAL IS SEARCING A LINE
   if (Serial.available())
   {
-    read_text = Serial.read();  // Read a data
+    read_text = Serial.readString();  // Read a data
   }
 
   // -- ROBOT'S EYES -- //
-  if (read_text == 'Eyes on')  // Eyes on
+  if (read_text == 'a')  // Eyes on
   {
     digitalWrite(ledPin1, HIGH);
     digitalWrite(ledPin2, HIGH);
   }
-  else
+  else if (read_text == 'b')  // Eyes off
   {
     digitalWrite(ledPin1, LOW);
     digitalWrite(ledPin2, LOW);  
