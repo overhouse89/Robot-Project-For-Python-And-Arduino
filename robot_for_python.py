@@ -1,5 +1,5 @@
 
-# Module
+# Modules
 from modules import robot_body  # Robot's robot
 from modules import robot_serial_connection  # Serial connection
 from modules import robot_tkinter  # Tkinter for robot's head
