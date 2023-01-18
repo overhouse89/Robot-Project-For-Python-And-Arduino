@@ -16,10 +16,11 @@ int ledPin2 = 6;
 int delayTime = 500;
 
 // SERVOS NUMBERS
-float servoNum[] = {0,0,0};
 float servoNum1 = 0;
 float servoNum2 = 0;
 float servoNum3 = 0;
+
+char read_text;
 
 void setup()
 {
@@ -54,10 +55,26 @@ void setup()
 
 void loop()
 {
-  // TWO LEDS
-  digitalWrite(ledPin1, HIGH);
-  digitalWrite(ledPin2, HIGH);
-  ////////////////////////////
+
+  // SERIAL IS SEARCING A LINE
+  if (Serial.available())
+  {
+    read_text = Serial.read();  // Read a data
+  }
+
+  // -- ROBOT'S EYES -- //
+  if (read_text == 'Eyes on')  // Eyes on
+  {
+    digitalWrite(ledPin1, HIGH);
+    digitalWrite(ledPin2, HIGH);
+  }
+  else
+  {
+    digitalWrite(ledPin1, LOW);
+    digitalWrite(ledPin2, LOW);  
+  }
+
+  /*
 
   // SERVOS ARE RUNNING
   if (servoNum1 < -130)
@@ -89,5 +106,6 @@ void loop()
 
     Serial.println(servoNum1);
   }
+  */
 }
 

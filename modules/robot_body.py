@@ -1,6 +1,9 @@
 
-# Bools
+# Texts
 head_button_text = "Head"
+
+# Bools
+button_head_off = True
 
 # Class for robot's body
 class robot_body_class():
@@ -9,5 +12,11 @@ class robot_body_class():
 
 # Robot's head
 def body_head():
-	body_name_head = robot_body_class("Head")
-	print(body_name_head.body_name)
+	global button_head_off
+
+	if button_head_off:
+		button_head_off = False
+		print("Off")
+	else:
+		button_head_off = True
+		print("On")
