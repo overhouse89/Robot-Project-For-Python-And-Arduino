@@ -4,8 +4,8 @@ from tkinter import *  # Tkinter
 
 # Modules
 from modules import robot_serial_connection
-from modules import robot_body
 from modules.tkinter_for_button import *
+
 # Tkinter
 tk_screen = Tk()  # Screen
 
@@ -14,7 +14,7 @@ tk_screen.geometry("800x950")  # Screen's size
 tk_screen.eval('tk::PlaceWindow . center')  # Screen on center
 tk_screen.title("Dancing Robot")  # Screen's title
 
-if robot_serial_connection.serial_arduino != "Connected":
+if robot_serial_connection.serial_arduino == "Connected":
 	# Photo
 	tk_image_for_buttons = PhotoImage(file="imgs/arduino_and_python_dancing_robot_bg_buttons.png")  # Image
 

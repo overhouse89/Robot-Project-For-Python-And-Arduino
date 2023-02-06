@@ -10,9 +10,9 @@ serial_arduino = ""
 while True:
 	try:
 		# Serial's address is connected
-		serial_connection = serial.Serial("/dev/rfcomm0")  # Bluetooth is connected
-		serial_arduino = "Connected"
+		serial_connection = serial.Serial("/dev/rfcomm0")  # Bluetooth is connected for Raspberry Pi
 		time.sleep(2)
+		serial_arduino = "Connected"
 		serial_connection.close()
 		break
 	except Exception:
