@@ -5,8 +5,9 @@
 // SERVOS
 Servo rightArmServo;
 Servo rightHandServo;
-Servo headServo;
 Servo leftArmServo;
+Servo leftHandServo;
+Servo headServo;
 
 // LEDS NUMBERS
 int ledPin1 = 5;
@@ -15,12 +16,14 @@ int ledPin2 = 6;
 // DELAY NUMBER
 int delayTime = 500;
 
-// SERVOS NUMBERS
-float servoNum1 = 0;
-float servoNum2 = 0;
-float servoNum3 = 0;
+// BOOLEANS
+bool stopping_h_bool = true;
+bool stopping_ra_bool = true;
+bool stopping_la_bool = true;
+bool stopping_allb_bool = true;
 
-char read_text;
+// STRINGS
+String read_text;
 
 void setup()
 {
@@ -36,75 +39,229 @@ void setup()
   // LEFT ARM
   leftArmServo.attach(2);
 
-  // HEAD
-  headServo.attach(4);
+  // LEFT HAND
+  leftHandServo.attach(4);
 
-  // WRITE FOR SERVOS
-  rightArmServo.write(180);
-  rightHandServo.write(90);
-  leftArmServo.write(180);
+  // HEAD
+  headServo.attach(7);
+
+  // WRITE FOR RIGHT SERVOS
+  rightArmServo.write(110);
+  rightHandServo.write(110);
+  
+  // WRITE FOR LEFT SERVOS
+  leftArmServo.write(90); 
+  leftHandServo.write(110);
+
+  // WRITE FOR HEAD   ----   ANGLE:  20 ---> 50 ---> 80
   headServo.write(50);
+
+  delay(500);
 
   // TWO LEDS
 	pinMode(ledPin1, OUTPUT);
   pinMode(ledPin2, OUTPUT);
+
+  // EYES (LEDS) ARE TURNING
+  digitalWrite(ledPin1, HIGH);
+  digitalWrite(ledPin2, HIGH);
 }
 
 void loop()
 {
 
-  /*
-  // SERIAL IS SEARCING A LINE
+  // SERIAL IS SEARCHING A LINE
   if (Serial.available())
   {
-    read_text = Serial.read();  // Read a data
+      read_text = Serial.readString();  // Read a data
   }
 
-  // -- ROBOT'S EYES -- //
-  if (read_text == 'a')  // Eyes on
+  // -- ROBOT'S BODY -- //
+  if (read_text == "H" && stopping_h_bool == true)  // Head
   {
-    digitalWrite(ledPin1, HIGH);
-    digitalWrite(ledPin2, HIGH);
-  }
-  else if (read_text == 'b')  // Eyes off
-  {
-    digitalWrite(ledPin1, LOW);
-    digitalWrite(ledPin2, LOW);  
-  }
-  */
-
-  /*
-
-  // SERVOS ARE RUNNING
-  if (servoNum1 < -130)
-  {
-    if (servoNum2 < -130)
+    stopping_ra_bool = false;
+    stopping_la_bool = false;
+    stopping_allb_bool = false;
+    
+    delay(delayTime);
+    
+    for(int h_body = 50; h_body < 110; h_body += 1)
     {
-      servoNum2 = -131;
-      delay(1000);
-      servoNum1 = 0;
-      servoNum2 = 0;
+      headServo.write(h_body);
+      delay(8);
     }
-    else
+    delay(delayTime);
+    for(int h_body = 110; h_body >= 0; h_body -= 1)
     {
-      servoNum1 = -131;
-      servoNum2 -= 0.8;
-
-      rightArmServo.write(50 - servoNum2);
-      leftArmServo.write(50 - servoNum2);
-
-      Serial.println(servoNum2);
+      headServo.write(h_body);
+      delay(8);
     }
+    delay(delayTime);
+    for(int h_body = 0; h_body < 50; h_body += 1) 
+    {
+      headServo.write(h_body);
+      delay(8);
+    }
+    
+    delay(delayTime);
+    
+    read_text = "";
+    
+    stopping_ra_bool = true;
+    stopping_la_bool = true;
+    stopping_allb_bool = true;
   }
-  else
+  if (read_text == "RA" && stopping_ra_bool == true)  // Right arm
   {
-    servoNum1 -= 0.8;
-
-    rightArmServo.write(180 + servoNum1);
-    leftArmServo.write(180 + servoNum1);
-
-    Serial.println(servoNum1);
+    stopping_h_bool = false;
+    stopping_la_bool = false;
+    stopping_allb_bool = false;
+    
+    delay(delayTime);
+    
+    for(int ra_body = 110; ra_body > 20; ra_body -= 1)
+    {
+      rightArmServo.write(ra_body);
+      delay(10);
+    }
+    for(int ra_body = 110; ra_body > 10; ra_body -= 1)
+    {
+      rightHandServo.write(ra_body);
+      delay(8);
+    }
+    for(int ra_body = 10; ra_body < 110; ra_body += 1)
+    {
+      rightHandServo.write(ra_body);
+      delay(8);
+    }
+    for(int ra_body = 20; ra_body < 110; ra_body += 1)
+    {
+      rightArmServo.write(ra_body);
+      delay(10);
+    }
+    
+    delay(delayTime);
+    
+    read_text = "";
+    
+    stopping_h_bool = true;
+    stopping_la_bool = true;
+    stopping_allb_bool = true;
   }
-  */
+  if (read_text == "LA" && stopping_la_bool == true)  // Left arm
+  {
+    stopping_h_bool = false;
+    stopping_ra_bool = false;
+    stopping_allb_bool = false;
+
+    delay(delayTime);
+
+    for(int la_body = 90; la_body < 180; la_body += 1)
+    {
+      leftArmServo.write(la_body);
+      delay(10);
+    }
+    for(int la_body = 110; la_body < 180; la_body += 1)
+    {
+      leftHandServo.write(la_body);
+      delay(8);
+    }
+    for(int la_body = 180; la_body > 110; la_body -= 1)
+    {
+      leftHandServo.write(la_body);
+      delay(8);
+    }
+    for(int la_body = 180; la_body > 90; la_body -= 1)
+    {
+      leftArmServo.write(la_body);
+      delay(10);
+    }
+
+    delay(delayTime);
+    
+    read_text = "";
+    
+    stopping_h_bool = true;
+    stopping_ra_bool = true;
+    stopping_allb_bool = true;
+  }
+  if (read_text == "ALLB" && stopping_allb_bool == true)  // All bodies
+  {
+    stopping_h_bool = false;
+    stopping_ra_bool = false;
+    stopping_la_bool = false;
+    
+    delay(delayTime);
+    
+    for(int all_body = 50; all_body < 110; all_body += 1)
+    {
+      headServo.write(all_body);
+      delay(8);
+    }
+    delay(delayTime);
+    for(int ra_body = 110; ra_body > 20; ra_body -= 1)
+    {
+      rightArmServo.write(ra_body);
+      delay(10);
+    }
+    for(int ra_body = 110; ra_body > 10; ra_body -= 1)
+    {
+      rightHandServo.write(ra_body);
+      delay(8);
+    }
+    for(int ra_body = 10; ra_body < 110; ra_body += 1)
+    {
+      rightHandServo.write(ra_body);
+      delay(8);
+    }
+    delay(delayTime);
+    for(int ra_body = 20; ra_body < 110; ra_body += 1)
+    {
+      rightArmServo.write(ra_body);
+      delay(10);
+    }
+    delay(delayTime);
+    for(int all_body = 110; all_body >= 0; all_body -= 1)
+    {
+      headServo.write(all_body);
+      delay(8);
+    }
+    delay(delayTime);
+    for(int la_body = 90; la_body < 180; la_body += 1)
+    {
+      leftArmServo.write(la_body);
+      delay(10);
+    }
+    for(int la_body = 110; la_body < 180; la_body += 1)
+    {
+      leftHandServo.write(la_body);
+      delay(8);
+    }
+    for(int la_body = 180; la_body > 110; la_body -= 1)
+    {
+      leftHandServo.write(la_body);
+      delay(8);
+    }
+    delay(delayTime);
+    for(int la_body = 180; la_body > 90; la_body -= 1)
+    {
+      leftArmServo.write(la_body);
+      delay(10);
+    }
+    delay(delayTime);
+    for(int all_body = 0; all_body < 50; all_body += 1) 
+    {
+      headServo.write(all_body);
+      delay(8);
+    }
+
+    delay(delayTime);
+    
+    read_text = "";
+    
+    stopping_h_bool = true;
+    stopping_ra_bool = true;
+    stopping_la_bool = true;
+  }
+  
 }
-
